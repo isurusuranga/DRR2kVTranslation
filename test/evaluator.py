@@ -18,7 +18,7 @@ class Evaluator(object):
         self.test_drr_paths = glob.glob(os.path.join(self.options.dataroot, '*.png'))
 
         # create drr2kV generator model
-        self.netG_A2B = Generator().to(self.device)
+        self.netG_A2B = Generator(options).to(self.device)
         self.checkpoint = self.saver.load_checkpoint()
         # Load state dicts
         self.netG_A2B.load_state_dict(self.checkpoint['netG_A2B_state_dict'])
