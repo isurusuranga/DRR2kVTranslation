@@ -1,6 +1,6 @@
 # DRR2kVTranslation
 
-This code repository includes style-transfer component (a conditional CycleGAN version to generate synthetic kV images) which implements as a part of the paper: [Deep-Motion-Net: GNN-based volumetric organ shape reconstruction from single-view 2D projections](https://arxiv.org/abs/2407.06692). The whole code is implemented in [PyTorch](https://pytorch.org/). 
+This code repository includes a style-transfer module based on a conditional CycleGAN version for generating synthetic kV images for the paper: [Deep-Motion-Net: GNN-based volumetric organ shape reconstruction from single-view 2D projections](https://arxiv.org/abs/2407.06692). The whole code is implemented in [PyTorch](https://pytorch.org/). 
 
 ## Getting Started
 
