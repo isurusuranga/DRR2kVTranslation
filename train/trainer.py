@@ -12,7 +12,7 @@ class Trainer(object):
     def __init__(self, options):
         self.options = options
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        self.saver = CheckpointSaver(save_dir=options.checkpoint_dir)
+        self.saver = CheckpointSaver(save_dir=options.model_save_path)
 
         trainDRR = os.path.join(self.options.dataroot, 'trainDRR')
         trainKV = os.path.join(self.options.dataroot, 'trainkV')
@@ -106,7 +106,7 @@ class Trainer(object):
 
     def model_train(self):
         start_epoch = 0
-        print_freq = 1
+        print_freq = 5
 
         if self.checkpoint is not None:
             start_epoch = self.checkpoint['last_epoch'] + 1
@@ -226,22 +226,24 @@ class Trainer(object):
                         f"loss_G_GAN: {(loss_GAN_A2B + loss_GAN_B2A).item():.4f} "
                         f"loss_G_cycle: {(loss_cycle_ABA + loss_cycle_BAB).item():.4f}")
 
-            if epoch % print_freq == 0:
-                self.sample_images_test_batch(epoch)
-                state = {
-                    'last_epoch': epoch,
-                    'netG_A2B_state_dict': self.netG_A2B.state_dict(),
-                    'netG_B2A_state_dict': self.netG_B2A.state_dict(),
-                    'netD_A_state_dict': self.netD_A.state_dict(),
-                    'netD_B_state_dict': self.netD_B.state_dict(),
-                    'optimizer_G_state_dict': self.optimizer_G.state_dict(),
-                    'optimizer_D_A_state_dict': self.optimizer_D_A.state_dict(),
-                    'optimizer_D_B_state_dict': self.optimizer_D_B.state_dict(),
-                    'lr_scheduler_G_state_dict': self.lr_scheduler_G.state_dict(),
-                    'lr_scheduler_D_A_state_dict': self.lr_scheduler_D_A.state_dict(),
-                    'lr_scheduler_D_B_state_dict': self.lr_scheduler_D_B.state_dict()
-                }
-                self.saver.save_checkpoint(state)
+            self.sample_images_test_batch(epoch)
+            state = {
+                'last_epoch': epoch,
+                'netG_A2B_state_dict': self.netG_A2B.state_dict(),
+                'netG_B2A_state_dict': self.netG_B2A.state_dict(),
+                'netD_A_state_dict': self.netD_A.state_dict(),
+                'netD_B_state_dict': self.netD_B.state_dict(),
+                'optimizer_G_state_dict': self.optimizer_G.state_dict(),
+                'optimizer_D_A_state_dict': self.optimizer_D_A.state_dict(),
+                'optimizer_D_B_state_dict': self.optimizer_D_B.state_dict(),
+                'lr_scheduler_G_state_dict': self.lr_scheduler_G.state_dict(),
+                'lr_scheduler_D_A_state_dict': self.lr_scheduler_D_A.state_dict(),
+                'lr_scheduler_D_B_state_dict': self.lr_scheduler_D_B.state_dict()
+            }
+            self.saver.save_checkpoint(state)
+
+            if (epoch % print_freq == 0) and epoch >= 40:
+                self.saver.save_temp_checkpoint(state)
 
             # Update learning rates
             self.lr_scheduler_G.step()

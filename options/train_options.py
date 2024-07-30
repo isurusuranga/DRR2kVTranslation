@@ -17,8 +17,7 @@ class TrainOptions(BaseOptions):
         self.parser.add_argument('--resume', dest='resume', default=True, action='store_true',
                             help='Resume from checkpoint (Use latest checkpoint by default')
         self.parser.add_argument('--log_dir', default='logs', help='Directory to store logs')
-        self.parser.add_argument('--checkpoint', default=None, help='Path to checkpoint')
-        self.parser.add_argument('--num_epochs', type=int, default=300, help='Total number of training epochs')
+        self.parser.add_argument('--num_epochs', type=int, default=100, help='Total number of training epochs')
         self.parser.add_argument('--batch_size', type=int, default=1, help='Batch size')
         self.parser.add_argument('--lr', type=float, default=0.0002, help='initial learning rate for adam')
         self.parser.add_argument('--ilw', type=float, default=5.0, help='Weight balance scalar for identity loss term')
@@ -33,9 +32,6 @@ class TrainOptions(BaseOptions):
         self.args.log_dir = os.path.join(os.path.abspath(self.args.log_dir), self.args.name)
         if not os.path.exists(self.args.log_dir):
             os.makedirs(self.args.log_dir)
-        self.args.checkpoint_dir = os.path.join(self.args.log_dir, 'checkpoints')
-        if not os.path.exists(self.args.checkpoint_dir):
-            os.makedirs(self.args.checkpoint_dir)
         self.args.output_dir = os.path.join(self.args.log_dir, 'outputs')
         if not os.path.exists(self.args.output_dir):
             os.makedirs(self.args.output_dir)

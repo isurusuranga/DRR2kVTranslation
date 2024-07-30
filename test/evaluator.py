@@ -11,7 +11,7 @@ class Evaluator(object):
     def __init__(self, options):
         self.options = options
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        self.saver = CheckpointSaver(save_dir=options.checkpoint_dir)
+        self.saver = CheckpointSaver(save_dir=options.model_save_path)
 
         # pass the absolute folder path which exists all the images we need to transfer the style
         # Point to each DRR folder (i.e. train/validation/test) that need to transferred style to generate synthetic kVs
@@ -34,7 +34,7 @@ class Evaluator(object):
             drr_gantry_angle = float(os.path.basename(img_name_str).rsplit('_', 1)[1])
             drr_gantry_angle = torch.tensor([drr_gantry_angle / 360]).to(self.device)
 
-            # Path should be come with rowdata for a given deformed graph
+            # Path should be come with row data for a given deformed graph
             img = Image.open(path)
             img = img.resize((self.options.img_res, self.options.img_res))
             img = TF.to_tensor(img)
