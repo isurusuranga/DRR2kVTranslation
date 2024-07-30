@@ -46,6 +46,7 @@ python eval.py --dataroot *** --model_save_path *** --test_results_dir ***
 
 ```--test_results_dir``` => Folder to store style-transferred images from the model.
 
+## Citing
 
 If you find this code is useful for your research, please consider citing the following paper:
 
